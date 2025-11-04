@@ -6,6 +6,7 @@ import useParsedCookie from "../../hooks/useParsedCookie.js"
 import LogoutAlert from "../../CastomElements/LogoutAlert.js"
 
 export default function Login(){
+  const api = process.env.REACT_APP_API_URL
   const Navigate = useNavigate()
   const [ showLogout, setLogout ] = useState(true)
   // Login data state 
@@ -29,7 +30,7 @@ export default function Login(){
   
   async function LoginRequest(){
     try{
-      const request = await fetch("http://localhost:7000/signin",{
+      const request = await fetch(api+"/signin",{
         method:"POST",
         headers:{"content-type":"application/json"},
         body:JSON.stringify(loginData)
