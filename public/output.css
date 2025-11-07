@@ -745,10 +745,6 @@ video {
   flex-direction: column;
 }
 
-.items-start {
-  align-items: flex-start;
-}
-
 .items-end {
   align-items: flex-end;
 }
@@ -870,11 +866,6 @@ video {
   background-color: transparent;
 }
 
-.bg-\[\#5b9c94\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(91 156 148 / var(--tw-bg-opacity, 1));
-}
-
 .object-cover {
   object-fit: cover;
 }
@@ -924,10 +915,6 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-
-.text-right {
-  text-align: right;
 }
 
 .text-2xl {

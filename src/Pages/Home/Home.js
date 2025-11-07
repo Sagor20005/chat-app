@@ -3,6 +3,7 @@ import ChatList from "./ChatList.js"
 import { Link } from "react-router-dom"
 
 export default function Home(){
+  
   return(
     <div className="h-dvh relative">
       <Header />

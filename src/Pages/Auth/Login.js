@@ -1,8 +1,7 @@
 import IconInput from "../../CastomElements/IconInput.js"
 import { Link, useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useCookies } from "react-cookie"
-import useParsedCookie from "../../hooks/useParsedCookie.js"
 import LogoutAlert from "../../CastomElements/LogoutAlert.js"
 
 export default function Login(){
@@ -13,7 +12,6 @@ export default function Login(){
   const [loginData,setLoginData] = useState({})
   const [cookies,setCookie,removeCookie] = useCookies()
   const cookie = cookies.jessengar_auth
-  const data = useParsedCookie()
   
   
   if(cookie){

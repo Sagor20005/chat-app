@@ -8,15 +8,50 @@ import Users from "./Pages/Users/Users.js"
 import Menu from "./Pages/Menu/Menu.js"
 import Profile from "./Pages/Menu/Profile/Profile.js"
 import { socket } from "./socket.js"
+import { useEffect } from "react"
+import useParsedCookie from "./hooks/useParsedCookie.js"
+import { useSelector, useDispatch } from "react-redux"
+import { GetChatList, pushMessage } from "./features/chats/chatsSlice.js"
 
 export default function App(){
+  const dispatch = useDispatch()
   
-  socket.on("connect",()=>{
-    console.log("connected")
-  })
+  const myCookie = useParsedCookie()
+  const my_Id = myCookie?._id
+  
+  const chatsList = useSelector((state)=> state.chats )
+  
+  
+  
+  useEffect(()=>{
+    
+    // inside the if block of code run when Loged in user
+    if(my_Id){
+      
+      // Getting all chats
+      if(!chatsList?.chats?.length){
+        dispatch(GetChatList(my_Id))
+      }
+      
+      // connect Web socket
+      socket.on("connect",()=>{})
+      
+      // handle Got new message
+      socket.on("new_message",(message)=>{
+        // cheack is for me ?
+        const sender = message.sender
+        const receiver = message.receiver_id
+        const forMe = sender === my_Id || receiver === my_Id
+        if(!forMe) return
+        dispatch(pushMessage(message))
+      })
+      
+      
+    } // end if(my_Id)
+  },[dispatch,my_Id,chatsList?.chats?.length])
   
   return (
-    <div className="h-screen md:w-[500px] md:mx-auto bg-black text-white">
+    <div className="h-dvh md:w-[500px] md:mx-auto bg-black text-white">
       <BrowserRouter>
         <Routes>
           <Route element={<PrivetComponent />}>

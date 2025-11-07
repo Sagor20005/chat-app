@@ -20,7 +20,7 @@ export default function Users(){
    }
    GetUsers()
     
-  },[])
+  },[api])
   
   
   return(

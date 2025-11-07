@@ -47,7 +47,7 @@ export default function Signup(){
   
   
   return(
-    <div className="h-dvh flex justify-center items-center">
+    <div key={reload} className="h-dvh flex justify-center items-center">
       
       <div className="bg-[#aef6f659] py-6 rounded-2xl backdrop-blur w-[300px] flex flex-col items-center gap-3">
         <h2 className="text-2xl">Signup</h2>

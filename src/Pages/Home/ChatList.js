@@ -1,34 +1,46 @@
 import Persone from "./Persone.js"
-import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
-import useParsedCookie from "../../hooks/useParsedCookie.js"
+import { useSelector } from "react-redux"
 
 export default function ChatList(){
-  const api = process.env.REACT_APP_API_URL
-  const data = useParsedCookie()
-  const [ chats, setChats ] = useState([])
   const defaultAvatar = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
   
-  useEffect(()=>{
-   async function GetChats(){
-     const { _id } = data
-     try{
-       let res = await fetch(api+"/message/chat/"+_id)
-       res = await res.json()
-       setChats(res.chats)
-     }catch(err){
-       console.log(err)
-     }
-   }
-   GetChats()
-    
-  },[])
   
   
+  const chatsList = useSelector((state)=> state.chats )
+  const chats = chatsList.chats
+  
+  
+  // Extract Last messaage
+  function ExtractLastMessage(ChatList){
+    const LastMessageObj = {}
+    // loop
+    for(const chat of ChatList){
+      const lastMessage = chat.messages ? chat.messages[chat.messages.length-1].text : "Ready for Chat!"
+      const lastSeen = chat?.messages ? chat.messages[chat.messages.length-1].seen : false
+      const atSend = chat?.messages ? chat.messages[chat.messages.length-1].atSend : ""
+      
+      const chatName = chat.chat_id
+       
+      LastMessageObj[chatName] = {}
+      LastMessageObj[chatName].text = lastMessage
+      LastMessageObj[chatName].seen = lastSeen
+      LastMessageObj[chatName].atSend = atSend
+    }
+    return LastMessageObj
+  }
+  
+  const MyLastMessages = ExtractLastMessage(chats)
+  
+  
+  
+  let alert_message = ""
+  if(ChatList.isLodding) alert_message = "Lodding.."
+  if(!ChatList.isLodding && ChatList.error) alert_message = ChatList.error
+  if(!ChatList.isLodding && !chatsList.chats.length) alert_message = "Start a New chat."
   if(!chats.length){
     return(
       <div className="h-full w-full flex justify-center items-center">
-        <p><i className="fas fa-comment-medical"></i> Start a New chat</p>
+        <p><i className="fas fa-comment-medical"></i> {alert_message} </p>
       </div>
       )
   }
@@ -40,14 +52,14 @@ export default function ChatList(){
       
       {
         chats.map((chat)=>{
-        console.log(chat)
           return(
           <Persone 
             image={chat.user_avatar ? chat.user_avatar : defaultAvatar}
-            seen={true}
+            seen={MyLastMessages[chat.chat_id].seen}
             name={chat.user_name}
             chat={chat}
-            last_message="You: Hi - 5:16 PM" />
+            key={chat.user_name}
+            last_message={`${MyLastMessages[chat.chat_id].text}`} />
           )
         })
       }

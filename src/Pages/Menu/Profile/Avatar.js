@@ -33,7 +33,7 @@ export default function Avatar(){
     
   }
   return(
-    <div className="grid justify-center">
+    <div key={reload} className="grid justify-center">
       
       <div>
         <input onChange={UpdateAvatar} className="h-0 w-0 opacity-0" type="file" id="avatar"/>

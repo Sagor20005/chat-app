@@ -1,10 +1,13 @@
-import { useRef, useEffect, useState } from "react"
+import { useRef, useEffect } from "react"
 import Message from "./Message.js"
-import { socket } from "../../socket.js"
+import { messageSeen } from "../../features/chats/chatsSlice.js"
+import { useDispatch } from "react-redux"
 
 
 export default function Messages({ messages, my_id, avatar }){
   const MessagesEl = useRef(null)
+  const dispatch = useDispatch()
+  
   
   
   useEffect(()=>{
@@ -17,6 +20,13 @@ export default function Messages({ messages, my_id, avatar }){
       
       {
         messages.map((msg)=>{
+        
+        if(!msg.seen && msg.sender !== my_id){
+          const message_id = msg.message_id
+          const chat_id = msg.chat_id
+          dispatch(messageSeen({ message_id, chat_id }))
+        }
+        
           return(
           <Message message={msg.text} user={ msg.sender === my_id } avatar={avatar} />
           )

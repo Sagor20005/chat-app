@@ -1,27 +1,24 @@
 import { socket } from "../../../socket.js"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
-export default function Footer({ setMessages, chat_id, members, my_id }){
-  const [ message,setMessage ] = useState({
-    sender: my_id, receiver_id: members, chat_id, text:""
-  })
+export default function Footer({ chat_id, members, my_id }){
+  
+  const messageTemplate = {
+    message_id: window.crypto.randomUUID(),
+    sender: my_id,
+    receiver_id: members,
+    chat_id,
+    text:"",
+    seen:false 
+  }
+  const [ message,setMessage ] = useState(messageTemplate)
   
   
   function sendMessage(){
-    socket.emit("user_message",message)
-    setMessage({sender: my_id, receiver_id: members, chat_id, text:""})
+    socket.emit("user_message",{ ...message, atSend:Date.now() })
+    setMessage(messageTemplate)
   }
-   useEffect(()=>{
-     
-     socket.on("new_message",(message)=>{
-      if(message.chat_id === chat_id){
-        setMessages((prev)=>{
-          return [ ...prev, message]
-        })
-      }
-    })
-     
-   },[])
+
   
   
   return(

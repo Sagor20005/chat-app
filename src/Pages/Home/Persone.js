@@ -4,10 +4,10 @@ export default function Persone({ last_message, seen, chat }){
   const Navigate = useNavigate()
   const defaultAvatar = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
   
-  const { user_avatar, user_id, user_name } = chat
+  const { user_avatar, user_name } = chat
   
   return(
-    <div onClick={()=>Navigate("/inbox",{ state:{chat} })} className="hover:scale-95 transition flex justify-between items-center p-3">
+    <div onClick={()=>Navigate("/inbox",{ state:{chat} })} className="hover:scale-95 transition flex justify-between items-center p-3" key={chat.user_name}>
         <div className="flex gap-3 items-center">
           <img className="w-[70px] h-[70px] rounded-full object-cover" src={user_avatar ? user_avatar : defaultAvatar} alt="Persone" />
           <div className="flex flex-col ">
