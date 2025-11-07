@@ -26,7 +26,9 @@ export default function App(){
   useEffect(()=>{
     
     // connect Web socket
-    socket.on("connect",()=>{})
+    socket.on("connect",()=>{
+      console.log("Web socket Connected ✨")
+    })
     
     // inside the if block of code run when Loged in user
     if(my_Id){
@@ -50,7 +52,7 @@ export default function App(){
       
       
     } // end if(my_Id)
-  },[dispatch,my_Id,chatsList?.chats?.length])
+  },[])
   
   return (
     <div className="h-dvh md:w-[500px] md:mx-auto bg-black text-white">
