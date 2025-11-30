@@ -1,10 +1,12 @@
 import { socket } from "../../../socket.js"
 import { useState, useRef } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import MyAlert from "../../../CastomElements/MyAlert.js"
+//import { saveChats } from "../../../features/chats/chatsSlice.js"
 
 export default function Footer({ chat_id, members, my_id }){
   const InputEl = useRef({})
+  //const dispatch = useDispatch()
   const helper = useSelector((state)=> state.helper)
   const [showAlert,setShowAlert] = useState(false)
   const messageTemplate = {

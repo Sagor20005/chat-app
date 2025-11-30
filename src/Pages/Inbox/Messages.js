@@ -2,6 +2,7 @@ import { useRef, useEffect } from "react"
 import Message from "./Message.js"
 import { messageSeen } from "../../features/chats/chatsSlice.js"
 import { useDispatch } from "react-redux"
+import { socket } from "../../socket.js"
 
 
 export default function Messages({ messages, my_id, avatar }){
@@ -19,16 +20,19 @@ export default function Messages({ messages, my_id, avatar }){
       
       
       {
-        messages.map((msg)=>{
+        messages.map((msg,i,arr)=>{
         
         if(!msg.seen && msg.sender !== my_id){
           const message_id = msg.message_id
           const chat_id = msg.chat_id
-          dispatch(messageSeen({ message_id, chat_id }))
+          //dispatch(messageSeen({ message_id, chat_id }))
+          socket.emit("seen",{chat_id,message_id})
         }
         
+        const isLastMessage = i === (arr.length-1)
+        
           return(
-          <Message message={msg.text} user={ msg.sender === my_id } avatar={avatar} />
+          <Message message={msg} userId={ my_id } avatar={avatar} isLastMessage={isLastMessage} />
           )
         })
       }

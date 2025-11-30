@@ -8,19 +8,28 @@ import Users from "./Pages/Users/Users.js"
 import Menu from "./Pages/Menu/Menu.js"
 import Profile from "./Pages/Menu/Profile/Profile.js"
 import { socket } from "./socket.js"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import useParsedCookie from "./hooks/useParsedCookie.js"
 import { useSelector, useDispatch } from "react-redux"
-import { GetChatList, pushMessage } from "./features/chats/chatsSlice.js"
+import { GetChatList, pushMessage, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
 import { socketIoConnected } from "./features/helper/helperSlice.js"
 
 export default function App(){
   const dispatch = useDispatch()
+  const [firstRender,setFirstRender] = useState(false)
   
   const myCookie = useParsedCookie()
   const my_Id = myCookie?._id
   
   const chatsList = useSelector((state)=> state.chats )
+  const want_reload = chatsList.want_reload
+  
+  useEffect(()=>{
+    if(my_Id){
+      // Getting all chats
+        dispatch(GetChatList(my_Id))
+    }
+  },[want_reload])
   
   
   
@@ -37,13 +46,6 @@ export default function App(){
     // inside the if block of code run when Loged in user
     if(my_Id){
       
-      // Getting all chats
-      if(!chatsList?.chats?.length){
-        dispatch(GetChatList(my_Id))
-      }
-      
-      
-      
       // handle Got new message
       socket.on("new_message",(message)=>{
         // cheack is for me ?
@@ -52,6 +54,11 @@ export default function App(){
         const forMe = sender === my_Id || receiver === my_Id
         if(!forMe) return
         dispatch(pushMessage(message))
+        dispatch(saveChats())
+      })
+      
+      socket.on("seen_response",(data)=>{
+        dispatch(messageSeen(data))
       })
       
       

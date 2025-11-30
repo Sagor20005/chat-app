@@ -3,10 +3,14 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { useCookies } from "react-cookie"
 import LogoutAlert from "../../CastomElements/MyAlert.js"
+import Logout_cleenar from "../../utilities/Logout.js"
+import { useDispatch } from "react-redux"
+import {want_reload} from "../../features/chats/chatsSlice.js"
 
 export default function Login(){
   const api = process.env.REACT_APP_API_URL
   const Navigate = useNavigate()
+  const dispatch = useDispatch()
   const [ showLogout, setLogout ] = useState(true)
   // Login data state 
   const [loginData,setLoginData] = useState({})
@@ -21,7 +25,7 @@ export default function Login(){
     text="Want Log Out ?"
     onClose={()=>Navigate("/")}
     onConfrom={()=>{
-      removeCookie("jessengar_auth")
+      Logout_cleenar({packages:{removeCookie,dispatch}})
       setLogout(!showLogout) // just for reload page
     }}
     />
@@ -38,6 +42,7 @@ export default function Login(){
       const response = await request.json()
       if(response.token){
         setCookie("jessengar_auth",response.token,{maxAge:60*60*24*360})
+        dispatch(want_reload())
         Navigate("/")
       }else if(response.error){
         alert(response.error)

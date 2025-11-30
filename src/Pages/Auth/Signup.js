@@ -3,9 +3,12 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useCookies } from "react-cookie"
 import LogoutAlert from "../../CastomElements/MyAlert.js"
+import { useDispatch } from "react-redux"
+import Logout_cleenar from "../../utilities/Logout.js"
 
 export default function Signup(){
   const Navigate = useNavigate()
+  const dispatch = useDispatch()
   const api = process.env.REACT_APP_API_URL
   const [reload,setReload] = useState(false)
   // Signup data state 
@@ -18,7 +21,7 @@ export default function Signup(){
       Navigate("/")
     }}
     onConfrom={()=>{
-      removeCookie("jessengar_auth")
+      Logout_cleenar({packages:{removeCookie,dispatch}})
       setReload(Date.now())
     }}
     show={true}

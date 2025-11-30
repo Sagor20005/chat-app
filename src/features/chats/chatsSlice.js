@@ -1,21 +1,50 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 
 const api = process.env.REACT_APP_API_URL
+
+// Get chats from database function
 export const GetChatList = createAsyncThunk("chats/GetChatList", async (_id)=>{
+  console.log("GetChatList")
   try{
        let res = await fetch(api+"/message/chat/"+_id)
        res = await res.json()
+       console.log({main:res.chats})
        return res.chats
      }catch(err){
        console.log(err)
      }
 })
 
+function margeChats(localChat=[],onlineChat=[]){
+  // extract all local chat id
+  const localChatsId = localChat.map(c=>c.chat_id)
+  // Margeing all chats
+  const marged = onlineChat.map((a_on_chat)=>{
+    // check have on online or not
+    const havedOnLocal = localChatsId.includes(a_on_chat.chat_id)
+    if (!havedOnLocal) return a_on_chat // if not have then return
+    // if have then more work
+    // find the local chat
+    const findLocalChat = localChat.find( lc=> lc.chat_id === a_on_chat.chat_id )
+    // check both message have or not 
+    const onlineMessage = a_on_chat.messages ? a_on_chat.messages : []
+    const localMessage = findLocalChat.messages ? findLocalChat.messages : []
+    return {
+      ...a_on_chat,
+      messages: [ ...localMessage, ...onlineMessage  ]
+    }
+  })
+  console.log({marged})
+  return marged
+}
+
+// Chats slice code
 export const chatsSlice = createSlice({
   name: 'chats',
   initialState: {
     isLodding:false,
     error: null,
+    want_reload:false,
     chats:[]
   },
   reducers: {
@@ -48,12 +77,22 @@ export const chatsSlice = createSlice({
         return {...chat, messages:newMessages}
         
       })
+    },
+    saveChats: (state)=>{
+      window.localStorage.setItem("jlc",JSON.stringify(state.chats))
+    },
+    clean: (state)=>{
+      state.chats = []
+    },
+    want_reload: (state)=>{
+      state.want_reload = Date.now()
     }
   },
   extraReducers: (builder)=>{
     builder
       .addCase(GetChatList.fulfilled,(state,action)=>{
         state.isLodding = false
+        state.want_reload = false
         const ls = window.localStorage.getItem("jlc")
         const localChats = ls ? JSON.parse(ls) : []
         const onlineChats = action.payload
@@ -63,9 +102,9 @@ export const chatsSlice = createSlice({
           state.chats = onlineChats
           return
         }
-        
-        state.chats = localChats
-        
+        const margedChats = margeChats(localChats,onlineChats)
+        state.chats = margedChats
+        window.localStorage.setItem("jlc",JSON.stringify(margedChats))
       })
       .addCase(GetChatList.pending,(state)=>{
         state.isLodding = true
@@ -77,5 +116,5 @@ export const chatsSlice = createSlice({
   }
 })
 
-export const { pushMessage, messageSeen } = chatsSlice.actions
+export const { pushMessage, messageSeen, saveChats, clean, want_reload } = chatsSlice.actions
 export default chatsSlice.reducer

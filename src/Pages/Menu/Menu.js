@@ -4,9 +4,12 @@ import useParsedCookie from "../../hooks/useParsedCookie.js"
 import { useState } from "react"
 import LogoutAlert from "../../CastomElements/MyAlert.js"
 import { useCookies } from "react-cookie"
+import logout_cleanar from "../../utilities/Logout.js"
+import { useDispatch } from "react-redux"
 
 export default function Menu(){
   const Navigate = useNavigate()
+  const dispatch = useDispatch()
   const { name, username, avatar } = useParsedCookie()
   const [showLogout,setShowLogout] = useState(false)
   const [,,removeCookie] = useCookies()
@@ -21,7 +24,9 @@ export default function Menu(){
         setShowLogout(false)
       }}
       onConfrom={()=>{
-        removeCookie("jessengar_auth")
+        logout_cleanar({packages:{
+          removeCookie, dispatch
+        }})
         Navigate("/login")
       }}
       fixed={true}

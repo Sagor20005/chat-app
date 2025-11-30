@@ -1,9 +1,12 @@
 import Persone from "./Persone.js"
 import { useSelector } from "react-redux"
+import useParsedCookie from "../../hooks/useParsedCookie.js"
 
 export default function ChatList(){
   const defaultAvatar = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
   
+  const myCookie = useParsedCookie()
+  const my_id = myCookie?._id
   
   
   const chatsList = useSelector((state)=> state.chats )
@@ -15,22 +18,18 @@ export default function ChatList(){
     const LastMessageObj = {}
     // loop
     for(const chat of ChatList){
-      const lastMessage = chat.messages ? chat.messages[chat.messages.length-1].text : "Ready for Chat!"
-      const lastSeen = chat?.messages ? chat.messages[chat.messages.length-1].seen : false
-      const atSend = chat?.messages ? chat.messages[chat.messages.length-1].atSend : ""
       
       const chatName = chat.chat_id
+      const lastMessage = chat.messages?.length ? chat.messages[chat.messages.length-1] : {}
+      console.log(chat)
+      LastMessageObj[chatName] = lastMessage
        
-      LastMessageObj[chatName] = {}
-      LastMessageObj[chatName].text = lastMessage
-      LastMessageObj[chatName].seen = lastSeen
-      LastMessageObj[chatName].atSend = atSend
     }
     return LastMessageObj
   }
   
   const MyLastMessages = ExtractLastMessage(chats)
-  
+  console.log(MyLastMessages)
   
   
   let alert_message = ""
@@ -55,11 +54,10 @@ export default function ChatList(){
           return(
           <Persone 
             image={chat.user_avatar ? chat.user_avatar : defaultAvatar}
-            seen={MyLastMessages[chat.chat_id].seen}
             name={chat.user_name}
             chat={chat}
             key={chat.user_name}
-            last_message={`${MyLastMessages[chat.chat_id].text}`} />
+            last_message={MyLastMessages[chat.chat_id]} />
           )
         })
       }
