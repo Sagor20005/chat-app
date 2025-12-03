@@ -71,12 +71,21 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState 
       <div className="flex gap-3">
         <textarea
         ref={InputEl}
+        onKeyDown={(e)=>{
+          const enter = e.key === "Enter"
+          if(enter){
+            sendMessage()
+            e.target.innerText = ""
+          }
+        }}
         value={message.text}
         onChange={(e)=>{
           setMessage((prev)=>({...prev, text: e.target.value}))
-        }} className="bg-[#192a2a] rounded-2xl px-3 py-1 outline-none" 
+        }} className="bg-[#192a2a] rounded-2xl px-3 py-1 outline-none h-[40px]" 
         type="text" placeholder="Message"></textarea>
-        <i onClick={sendMessage} className="text-2xl fa fa-paper-plane" aria-hidden="true"></i>
+        <button type="submit">
+          <i onClick={sendMessage} className="text-2xl fa fa-paper-plane" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
     </>
