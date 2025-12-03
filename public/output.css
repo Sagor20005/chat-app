@@ -736,8 +736,8 @@ video {
   max-width: 400px;
 }
 
-.max-w-\[60\%\] {
-  max-width: 60%;
+.max-w-\[80\%\] {
+  max-width: 80%;
 }
 
 .shrink {
@@ -801,8 +801,12 @@ video {
   overflow: hidden;
 }
 
-.overflow-scroll {
-  overflow: scroll;
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 .rounded-2xl {
