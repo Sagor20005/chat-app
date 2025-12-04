@@ -28,7 +28,7 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
           !isUser && <img className=" h-[30px] w-[30px] rounded-full object-cover" src={avatar ? avatar : defaultAvatar} alt="."/>
         }
         <div className={`${isUser ? "ml-auto" : ""} h-fit p-2 rounded-2xl bg-[#172828]`}>
-          <p>{LongStringWrapper(message.text)}</p>
+          <p className="max-w-[300px] break-words" >{message.text}</p>
         </div>
         {isUser && isLastMessage && message.seen && <img className="h-[20px] w-[20px] rounded-full inline-block absolute -bottom-6 right-2" src={avatar ? avatar : defaultAvatar}  alt="."/>}
       </div>

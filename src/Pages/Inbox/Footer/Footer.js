@@ -20,13 +20,14 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState 
   const [selectedMessage, setSelectedMessage] = selectedMessagesState
   
   function sendMessage(){
-    InputEl.current.focus()
     if(!helper.socketIo_connected){
       setShowAlert(true)
       return
     }
     socket.emit("user_message",{ ...message, atSend:Date.now() })
     setMessage(messageTemplate)
+    InputEl.current.focus()
+    InputEl.current.style.height = "40px"
   }
 
   
@@ -75,13 +76,15 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState 
           const enter = e.key === "Enter"
           if(enter){
             sendMessage()
-            e.target.innerText = ""
+            e.preventDefault()
           }
         }}
         value={message.text}
+        rows="1"
         onChange={(e)=>{
+          e.target.style.height = e.target.scrollHeight + "px";
           setMessage((prev)=>({...prev, text: e.target.value}))
-        }} className="bg-[#192a2a] rounded-2xl px-3 py-1 outline-none h-[40px]" 
+        }} className="bg-[#192a2a] rounded-2xl px-3 py-2 py-1 outline-none" 
         type="text" placeholder="Message"></textarea>
         <button type="submit">
           <i onClick={sendMessage} className="text-2xl fa fa-paper-plane" aria-hidden="true"></i>
