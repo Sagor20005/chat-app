@@ -8,15 +8,16 @@ import Users from "./Pages/Users/Users.js"
 import Menu from "./Pages/Menu/Menu.js"
 import Profile from "./Pages/Menu/Profile/Profile.js"
 import { socket } from "./socket.js"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import useParsedCookie from "./hooks/useParsedCookie.js"
 import { useSelector, useDispatch } from "react-redux"
 import { GetChatList, pushMessage, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
 import { socketIoConnected } from "./features/helper/helperSlice.js"
+import MyAlert from "./CastomElements/MyAlert.js"
 
 export default function App(){
   const dispatch = useDispatch()
-  
+  const [ showWaitAlert, setShowWaitAlert ] = useState(false)
   const myCookie = useParsedCookie()
   const my_Id = myCookie?._id
   
@@ -60,12 +61,35 @@ export default function App(){
         dispatch(messageSeen(data))
       })
       
+      // WAIT ALERT CONFIGARATION SETTIMEOUT
+      var tt = setTimeout(()=>{
+        if(chatsList.isLodding){
+          setShowWaitAlert(true)
+        }
+      },5000)
+      
       
     } // end if(my_Id)
+    
+    return ()=>{
+      clearInterval(tt)
+    }
   },[my_Id,dispatch])
   
   return (
     <div className="h-dvh md:w-[500px] md:mx-auto bg-black text-white">
+      
+      <MyAlert 
+        title="Internet"
+        text="Please Wait may your Internet Slow!"
+        show={showWaitAlert}
+        fixed={true}
+        yes_btn_text="Ok"
+        no_btn_text="Exit"
+        onConfrom={()=>setShowWaitAlert(false)}
+        onClose={()=>setShowWaitAlert(false)}
+        />
+      
       <BrowserRouter>
         <Routes>
           <Route element={<PrivetComponent />}>

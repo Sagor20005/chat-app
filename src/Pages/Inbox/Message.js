@@ -2,28 +2,28 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
   const defaultAvatar = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
   const isUser = message.sender === userId
   
- function LongStringWrapper(str){
-    const strSlice = str.split(" ")
-    const brokeLongWord = strSlice.map((slice)=>{
-      if(slice.length > 15){
-        const loop = (slice.length / 15) > Math.floor(slice.length / 15) ? Math.floor(slice.length / 15) + 1 : slice.length / 15
-        console.log(loop)
-        let newSlice = ""
-        let loopCount = 0
-        for(let i = 1;i<= loop; i++){
-          newSlice+= "\n" + slice.slice(loopCount*15,i*15)
-          loopCount++
-        }
-        return newSlice
-      }else{
-        return slice
-      }
-    }).join(" ")
-    return brokeLongWord
-  }
+// function LongStringWrapper(str){
+//     const strSlice = str.split(" ")
+//     const brokeLongWord = strSlice.map((slice)=>{
+//       if(slice.length > 15){
+//         const loop = (slice.length / 15) > Math.floor(slice.length / 15) ? Math.floor(slice.length / 15) + 1 : slice.length / 15
+//         console.log(loop)
+//         let newSlice = ""
+//         let loopCount = 0
+//         for(let i = 1;i<= loop; i++){
+//           newSlice+= "\n" + slice.slice(loopCount*15,i*15)
+//           loopCount++
+//         }
+//         return newSlice
+//       }else{
+//         return slice
+//       }
+//     }).join(" ")
+//     return brokeLongWord
+//   }
   
   return(
-    <div onDoubleClick={()=>setSelectedMessages(message)} className={`${isUser ? "ml-auto" : ""} my-3 px-3 flex gap-3 items-end max-w-[80%] relative`}>
+    <div onDoubleClick={()=>setSelectedMessages(message)} className={`${isUser ? "ml-auto" : ""} my-3 px-3 flex gap-3 items-end max-w-[300px] relative`}>
         {
           !isUser && <img className=" h-[30px] w-[30px] rounded-full object-cover" src={avatar ? avatar : defaultAvatar} alt="."/>
         }
