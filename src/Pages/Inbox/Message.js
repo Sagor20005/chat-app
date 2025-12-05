@@ -23,12 +23,12 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
 //   }
   
   return(
-    <div onDoubleClick={()=>setSelectedMessages(message)} className={`${isUser ? "ml-auto" : ""} my-3 px-3 flex gap-3 items-end max-w-[300px] relative`}>
+    <div onDoubleClick={()=>setSelectedMessages(message)} className={`my-3 px-3 flex gap-3 items-end relative`}>
         {
-          !isUser && <img className=" h-[30px] w-[30px] rounded-full object-cover" src={avatar ? avatar : defaultAvatar} alt="."/>
+          !isUser && <img className="shrink-0 h-[30px] w-[30px] rounded-full object-cover" src={avatar ? avatar : defaultAvatar} alt="."/>
         }
         <div className={`${isUser ? "ml-auto" : ""} h-fit p-2 rounded-2xl bg-[#172828]`}>
-          <p className="max-w-[300px] break-words" >{message.text}</p>
+          <p className="max-w-[280px] break-words" >{message.text}</p>
         </div>
         {isUser && isLastMessage && message.seen && <img className="h-[20px] w-[20px] rounded-full inline-block absolute -bottom-6 right-2" src={avatar ? avatar : defaultAvatar}  alt="."/>}
       </div>

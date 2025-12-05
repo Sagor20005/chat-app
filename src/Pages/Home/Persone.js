@@ -13,7 +13,7 @@ export default function Persone({ last_message, chat }){
   return(
     <div onClick={()=>Navigate("/inbox",{ state:{chat} })} className="hover:scale-95 transition flex justify-between items-center p-3" key={chat.user_name}>
         <div className="flex gap-3 items-center">
-          <img className="w-[70px] h-[70px] rounded-full object-cover" src={user_avatar ? user_avatar : defaultAvatar} alt="Persone" />
+          <img className="w-[70px] h-[70px] rounded-full shrink-0 object-cover" src={user_avatar ? user_avatar : defaultAvatar} alt="Persone" />
           <div className="flex flex-col ">
             <p>{user_name}</p>
             <p className={`${!last_message.seen && !isMyMessage ? "font-bold" :"text-[#84d9d5]"} text-sm`}>{last_message_text}</p>

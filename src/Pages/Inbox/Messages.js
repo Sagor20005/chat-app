@@ -12,7 +12,7 @@ export default function Messages({ messages, my_id, avatar, setSelectedMessages 
   },[messages])
   
   return(
-    <div ref={MessagesEl} className="h-full p-3 grow-0 shrink overflow-y-scroll overflow-x-hidden">
+    <div ref={MessagesEl} className=" h-full p-3 grow-0 shrink overflow-y-scroll overflow-x-hidden">
       
       
       {
