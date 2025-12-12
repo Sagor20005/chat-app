@@ -83,6 +83,7 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
   return(
     <>
       <EmojiBox 
+        tailwind={"mb-[100px]"}
         setEmoji={(code)=>setMessage((prev)=>({...prev,text: prev.text + String.fromCodePoint(code)}))} 
         isOpen={emojiOpen}
       />
@@ -109,10 +110,10 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
       {/*Reply selected Messages*/}
       {
         selectedMessage !== null && (
-        <div ref={replyBox} className="w-full flex justify-between items-center px-5 absolute left-0 -translate-y-[100%]">
+        <div ref={replyBox} className="bg-black w-full flex justify-between items-center px-5 absolute left-0 -translate-y-[100%]">
         <div>
-          <p>Replying to</p>
-          <p ref={replyPragraph} className="max-w-[300px] break-words">{selectedMessage.text}</p>
+          <p className="text-sm text-[#ddc2c2]">Replying to</p>
+          <p ref={replyPragraph} className=" ml-1 max-w-[300px] break-words">{selectedMessage.text}</p>
         </div>
         <i
           onClick={()=>setSelectedMessage(null)}

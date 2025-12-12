@@ -1,9 +1,10 @@
 import { useRef, useEffect } from "react"
 import Message from "./Message.js"
 import { socket } from "../../socket.js"
+import EmojiBox from "../../CastomElements/EmojiBox.js"
 
 
-export default function Messages({ messages, my_id, avatar, isTyping, setSelectedMessages, BottomPaddState }){
+export default function Messages({ messages, my_id, avatar, isTyping, setSelectedMessages, BottomPaddState, ReplyBoxState }){
   const MessagesEl = useRef(null)
   
   const [messagesBottomPadding] = BottomPaddState
@@ -12,8 +13,18 @@ export default function Messages({ messages, my_id, avatar, isTyping, setSelecte
     MessagesEl.current.scrollTop = MessagesEl.current.scrollHeight+100
   },[messages,messagesBottomPadding])
   
+  const [reactBoxData] = ReplyBoxState
+  
+  
   return(
     <>
+      <EmojiBox 
+        isOpen={reactBoxData !== null}
+        setEmoji={()=>{}}
+        tailwind="fixed z-[100] fixed"
+        x={reactBoxData?.x}
+        y={reactBoxData?.y}
+      />
       
       <div ref={MessagesEl} className=" h-full p-3 pb-10 grow-0 shrink overflow-y-scroll overflow-x-hidden">
       
@@ -31,7 +42,14 @@ export default function Messages({ messages, my_id, avatar, isTyping, setSelecte
         const isLastMessage = i === (arr.length-1)
         
           return(
-          <Message message={msg} userId={ my_id } avatar={avatar} isLastMessage={isLastMessage} setSelectedMessages={setSelectedMessages} />
+          <Message 
+            message={msg} 
+            userId={ my_id } 
+            avatar={avatar} 
+            isLastMessage={isLastMessage} 
+            setSelectedMessages={setSelectedMessages} 
+            ReplyBoxState={ReplyBoxState}
+            />
           )
         })
       }
