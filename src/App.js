@@ -71,8 +71,8 @@ export default function App(){
       })
       
       socket.on("react_res",(data)=>{
-        const { sender, receiver } = data
-        if(sender===my_Id || receiver === my_Id){
+        const { message } = data
+        if(message.sender === my_Id || message.receiver === my_Id){
           dispatch(handleReact(data))
           dispatch(saveChats())
         }

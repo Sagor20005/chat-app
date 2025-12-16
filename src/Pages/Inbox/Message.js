@@ -14,7 +14,7 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
       x: x+"px", y: y+"px",
       message,
       sender: userId,
-      receiver: isUser ? message.receiver : message.sender
+      receiver: message.sender
     })
   }
   
@@ -24,10 +24,10 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
           !isUser && <img className="shrink-0 h-[30px] w-[30px] rounded-full object-cover" src={avatar ? avatar : defaultAvatar} alt="."/>
         }
         <div className={`${isUser ? "ml-auto" : ""} h-fit flex gap-3 items-center`}>
-          <p className="max-w-[280px] break-words rounded-2xl p-2 bg-[#172828]" >
+          <p className=" relative max-w-[280px] break-words rounded-2xl p-2 bg-[#172828]" >
             <span className=" block text-sm text-[#a69696]">{replyMessage?.text}</span>
             <span>{message.text}</span>
-            <span className="relative -right-[10px] -bottom-[15px]">{message?.react && String.fromCodePoint(message.react)}</span>
+            <span className="absolute right-0 -bottom-[10px]">{message?.react && String.fromCodePoint(message.react)}</span>
           </p>
           <i onClick={(e)=>handleReactBtn(e)} className={`${isUser && "-order-1"} hover:opacity-100 opacity-0 fas fa-grin`}></i>
         </div>
