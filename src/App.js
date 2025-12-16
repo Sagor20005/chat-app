@@ -11,7 +11,7 @@ import { socket } from "./socket.js"
 import { useEffect, useState } from "react"
 import useParsedCookie from "./hooks/useParsedCookie.js"
 import { useSelector, useDispatch } from "react-redux"
-import { GetChatList, pushMessage, setTypingState, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
+import { GetChatList, pushMessage, handleReact, setTypingState, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
 import { socketIoConnected } from "./features/helper/helperSlice.js"
 import MyAlert from "./CastomElements/MyAlert.js"
 
@@ -67,6 +67,14 @@ export default function App(){
         const isForMe = data.receiver === my_Id
         if(isForMe){
           dispatch(setTypingState(data))
+        }
+      })
+      
+      socket.on("react_res",(data)=>{
+        const { sender, receiver } = data
+        if(sender===my_Id || receiver === my_Id){
+          dispatch(handleReact(data))
+          dispatch(saveChats())
         }
       })
       

@@ -13,14 +13,21 @@ export default function Messages({ messages, my_id, avatar, isTyping, setSelecte
     MessagesEl.current.scrollTop = MessagesEl.current.scrollHeight+100
   },[messages,messagesBottomPadding])
   
-  const [reactBoxData] = ReplyBoxState
+  const [reactBoxData, setReactBoxData] = ReplyBoxState
   
   
   return(
     <>
       <EmojiBox 
         isOpen={reactBoxData !== null}
-        setEmoji={()=>{}}
+        setEmoji={(code)=>{
+        const { sender, receiver, message } = reactBoxData
+          socket.emit("react",{
+            sender,receiver,message,
+            react_code: code
+          })
+          setReactBoxData(null)
+        }}
         tailwind="fixed z-[100] fixed"
         x={reactBoxData?.x}
         y={reactBoxData?.y}

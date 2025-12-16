@@ -11,7 +11,6 @@ export default function EmojiBox(Props){
       BoxEl.current.style.top = y
       BoxEl.current.style.left = x
     }
-    console.log(x,y)
   },[x,y])
   
   function HandleOnClick(code){

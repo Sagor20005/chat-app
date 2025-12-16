@@ -3,7 +3,7 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
   const isUser = message.sender === userId
   const replyMessage = message.replyMessage
   
-  const [reactBoxData, setReactBoxData] = ReplyBoxState
+  const [, setReactBoxData] = ReplyBoxState
   
   function handleReactBtn(e){
     let x = e.clientX 
@@ -11,7 +11,10 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
     let y = e.clientY
     y = y > window.innerHeight-350 ? window.innerHeight-400 : y
     setReactBoxData({
-      x: x+"px", y: y+"px"
+      x: x+"px", y: y+"px",
+      message,
+      sender: userId,
+      receiver: isUser ? message.receiver : message.sender
     })
   }
   
