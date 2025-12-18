@@ -82,7 +82,13 @@ export const chatsSlice = createSlice({
       const chatIndex = currrentState.chats.findIndex(c=>c.chat_id === message.chat_id)
       const messageIndex = chatIndex >= 0 ? ( currrentState.chats[chatIndex].messages?.findIndex(m=>m.message_id === message.message_id) ) : null
       if( messageIndex === null || messageIndex < 0  ) return
-      state.chats[chatIndex].messages[messageIndex].react = react_code
+      
+      const haveThisUserReact = currrentState.chats[chatIndex].messages[messageIndex].react.findIndex(re=> re.sender === sender)
+      if(haveThisUserReact >= 0){
+        state.chats[chatIndex].messages[messageIndex].react.splice(haveThisUserReact,1,{sender,react_code})
+        return
+      }
+      state.chats[chatIndex].messages[messageIndex].react.push({sender,react_code})
     },
     setTypingState: (state,action)=>{
       const originalState = current(state)

@@ -25,7 +25,8 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
     receiver_id: members,
     chat_id,
     text:"",
-    seen:false
+    seen:false,
+    react: []
   }
   const [ message,setMessage ] = useState(messageTemplate) // message state
   const [isTyping,setIsTyping] = useState(false) // typing status truck
