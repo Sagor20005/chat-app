@@ -39,7 +39,7 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
             <span className=" block text-sm text-[#a69696]">{replyMessage?.text}</span>
             <span>{message.text}</span>
             <div onClick={HandleMessageDetails}  className="absolute right-0 -bottom-[6px] flex" >
-              {message?.react.length > 0 && message.react.map((re)=>{
+              {message?.react?.length > 0 && message?.react?.map((re)=>{
                 return <span key={re.react_code} className="-m-1">{String.fromCodePoint(re.react_code)}</span>
               })}
             </div>
