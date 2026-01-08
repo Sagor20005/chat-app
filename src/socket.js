@@ -1,5 +1,9 @@
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 
-const URL = process.env.REACT_APP_API_URL
+// const URL = process.env.REACT_APP_API_URL
 
-export const socket = io(URL);
+// export const socket = io(URL,{
+//   auth: {
+//     uid: "jakareya"
+//   }
+// });

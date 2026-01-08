@@ -1,4 +1,4 @@
-import { socket } from "../../../socket.js"
+import { socket } from "../../../App.js"
 import { useState, useRef, useEffect } from "react"
 import { useSelector } from "react-redux"
 import MyAlert from "../../../CastomElements/MyAlert.js"

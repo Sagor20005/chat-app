@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react"
 import Message from "./Message.js"
-import { socket } from "../../socket.js"
+import { socket } from "../../App.js"
 import EmojiBox from "../../CastomElements/EmojiBox.js"
 
 

@@ -14,7 +14,10 @@ export default function Persone({ last_message, chat }){
   return(
     <div onClick={()=>Navigate("/inbox",{ state:{chat} })} className="hover:scale-95 transition flex justify-between items-center p-3" key={chat.user_name}>
         <div className="flex gap-3 items-center">
-          <img className="w-[70px] h-[70px] rounded-full shrink-0 object-cover" src={user_avatar ? user_avatar : defaultAvatar} alt="Persone" />
+          <div className="relative">
+            <img className="w-[70px] h-[70px] rounded-full shrink-0 object-cover" src={user_avatar ? user_avatar : defaultAvatar} alt="Persone" />
+            { chat.online && <div className="absolute right-0 bottom-0 h-[15px] w-[15px] rounded-full bg-[#49ff65]"></div> }
+          </div>
           <div className="flex flex-col ">
             <p>{user_name}</p>
             <p className={`${!last_message.seen && !isMyMessage ? "font-bold" :"text-[#84d9d5]"} text-sm`}>{typing ? "Typing.." : last_message_text }</p>

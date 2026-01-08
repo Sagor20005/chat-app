@@ -8,9 +8,11 @@ export default function ChatList(){
   const chatsList = useSelector((state)=> state.chats )
   const chats = chatsList.chats
   
+  console.log(chatsList)
   
   // Extract Last messaage
-  function ExtractLastMessage(ChatList){
+  function ExtractLastMessage(argmnt){
+    const ChatList = argmnt || []
     const LastMessageObj = {}
     // loop
     for(const chat of ChatList){
@@ -25,11 +27,9 @@ export default function ChatList(){
   
   const MyLastMessages = ExtractLastMessage(chats)
   
-  
   let alert_message = ""
-  if(ChatList.isLodding) alert_message = "Lodding.."
-  if(!ChatList.isLodding && ChatList.error) alert_message = ChatList.error
-  if(!ChatList.isLodding && !chatsList.chats.length) alert_message = "Start a New chat."
+  if(chatsList.isLodding) alert_message = "Please Wait.."
+  if(!chatsList.isLodding && !chatsList.chats.length) alert_message = "Start a New chat."
   if(!chats.length){
     return(
       <div className="h-full w-full flex justify-center items-center">

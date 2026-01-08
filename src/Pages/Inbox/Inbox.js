@@ -35,7 +35,7 @@ export default function Inbox(){
       componentState={MessageDetailsState} />
       
       <div className="flex flex-col h-full">
-      <Header name={user_name} avatar={user_avatar} />
+      <Header online={chat?.online} name={user_name} avatar={user_avatar} />
       <Messages 
         avatar={user_avatar} 
         isTyping={chat?.typing} 

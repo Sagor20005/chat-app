@@ -45,6 +45,27 @@ export const chatsSlice = createSlice({
     chats:[]
   },
   reducers: {
+    
+    setAUserOffline: (state,action)=>{
+      const currentState = current(state)
+      const chatIndex = currentState.chats.findIndex(c => c.user_id===action.payload.user_id)
+      state.chats[chatIndex].online = false
+    },
+    
+    setAUserOnline: (state,action)=>{
+      try{
+        const currentState = current(state)
+        const chatIndex = currentState.chats.findIndex(c => c.user_id===action.payload.user_id)
+        if(chatIndex === -1){
+          alert(`Not Found ${action.payload.user_id} User`)
+          return
+        }
+        state.chats[chatIndex].online = true
+      }catch(err){
+        console.log(err)
+      }
+    },
+    
     pushMessage: (state,action)=>{
       const newMessage = action.payload
       state.chats = state.chats.map((chat)=>{
@@ -130,8 +151,9 @@ export const chatsSlice = createSlice({
         state.isLodding = false
         state.want_reload = false
         const ls = window.localStorage.getItem("jlc")
-        const localChats = ls ? JSON.parse(ls) : []
-        const onlineChats = action.payload
+        const parsedLsData = typeof(ls) === "string" ? JSON.parse(ls) : []
+        const localChats = Array.isArray(parsedLsData) ? parsedLsData : []
+        const onlineChats = action.payload || []
         
         if(!localChats.length){
           window.localStorage.setItem("jlc",JSON.stringify(onlineChats))
@@ -152,5 +174,5 @@ export const chatsSlice = createSlice({
   }
 })
 
-export const { pushMessage, messageSeen, handleReact, UndoReact, setTypingState, saveChats, clean, want_reload } = chatsSlice.actions
+export const { setAUserOnline, setAUserOffline, pushMessage, messageSeen, handleReact, UndoReact, setTypingState, saveChats, clean, want_reload } = chatsSlice.actions
 export default chatsSlice.reducer
