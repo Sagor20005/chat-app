@@ -54,19 +54,18 @@ export default function App(){
   
   
   useEffect(()=>{
-    
-    // connect Web socket
-    socket.on("connect",()=>{
-      console.log("Connected")
-      dispatch(socketIoConnected(true))
-    })
-    socket.on("disconnect",()=>{
-      console.log("disconnected")
-      dispatch(socketIoConnected(false))
-    })
-    
+  
     // inside the if block of code run when Loged in user
     if(my_Id){
+        // connect Web socket
+      socket.on("connect",()=>{
+        console.log("Connected")
+        dispatch(socketIoConnected(true))
+      })
+      socket.on("disconnect",()=>{
+        console.log("disconnected")
+        dispatch(socketIoConnected(false))
+      })
       
       // handle Got new message
       socket.on("new_message",(message)=>{
