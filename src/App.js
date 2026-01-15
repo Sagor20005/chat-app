@@ -18,138 +18,137 @@ import nootifySound from "./utilities/notify.mp3"
 
 export let socket = {}
 
-export default function App(){
+export default function App() {
   const URL = process.env.REACT_APP_API_URL
   const dispatch = useDispatch()
-  const [ showWaitAlert, setShowWaitAlert ] = useState(false)
+  const [showWaitAlert, setShowWaitAlert] = useState(false)
   const myCookie = useParsedCookie()
   const my_Id = myCookie?._id
   const Notify = new Audio(nootifySound)
-  
-  const chatsList = useSelector((state)=> state.chats )
+
+  const chatsList = useSelector((state) => state.chats)
   const want_reload = chatsList.want_reload
-  
-  
-  useEffect(()=>{
-    if(chatsList.chats.length){
-      const allUserIds = chatsList.chats.map(c=> c.user_id)
-      socket.emit("checkWhosOnline",{host:my_Id,users:allUserIds})
+
+
+  useEffect(() => {
+    if (chatsList.chats.length) {
+      const allUserIds = chatsList.chats.map(c => c.user_id)
+      socket.emit("checkWhosOnline", { host: my_Id, users: allUserIds })
     }
-  },[chatsList.chats])
-  
-  
-  useEffect(()=>{
-    if(my_Id){
-      
-      socket = io(URL,{
+  }, [chatsList.chats])
+
+
+  useEffect(() => {
+    if (my_Id) {
+
+      socket = io(URL, {
         auth: {
           uid: my_Id
         }
       });
-      
+
       // Getting all chats
-        dispatch(GetChatList(my_Id))
+      dispatch(GetChatList(my_Id))
     }
-  },[want_reload,my_Id,dispatch])
-  
-  
-  useEffect(()=>{
-  
+  }, [want_reload, my_Id, dispatch])
+
+
+  useEffect(() => {
+
     // inside the if block of code run when Loged in user
-    if(my_Id){
-        // connect Web socket
-      socket.on("connect",()=>{
+    if (my_Id) {
+      // connect Web socket
+      socket.on("connect", () => {
         console.log("Connected")
         dispatch(socketIoConnected(true))
       })
-      socket.on("disconnect",()=>{
+      socket.on("disconnect", () => {
         console.log("disconnected")
         dispatch(socketIoConnected(false))
       })
-      
+
       // handle Got new message
-      socket.on("new_message",(message)=>{
+      socket.on("new_message", (message) => {
         // cheack is for me ?
         const sender = message.sender
         const receiver = message.receiver_id
         const forMe = sender === my_Id || receiver === my_Id
-        if(!forMe) return
+        if (!forMe) return
         dispatch(pushMessage(message))
         dispatch(saveChats())
-        if(sender !== my_Id){
+        if (sender !== my_Id) {
           Notify.play()
         }
       })
-      
-      socket.on("seen_response",(data)=>{
+
+      socket.on("seen_response", (data) => {
         dispatch(messageSeen(data))
       })
-      socket.on("typing_res",(data)=>{
+      socket.on("typing_res", (data) => {
         // Check its for you or not
         const isForMe = data.receiver === my_Id
-        if(isForMe){
+        if (isForMe) {
           dispatch(setTypingState(data))
         }
       })
-      
-      socket.on("react_res",(data)=>{
+
+      socket.on("react_res", (data) => {
         const { receiver, sender } = data
-        if((receiver?.filter(m=>m.user_id===my_Id)).length){
+        if ((receiver?.filter(m => m.user_id === my_Id)).length) {
           dispatch(handleReact(data))
           dispatch(saveChats())
         }
-        if(sender !== my_Id){
+        if (sender !== my_Id) {
           Notify.play()
         }
       })
-      
-      socket.on("undo_react",(data)=>{
-        console.log(data)
+
+      socket.on("undo_react", (data) => {
         const { receiver } = data
-        if((receiver?.filter(m=>m.user_id===my_Id)).length){
+        if ((receiver?.filter(m => m.user_id === my_Id)).length) {
           dispatch(UndoReact(data))
           dispatch(saveChats())
         }
       })
-      
-      socket.on("user_offline_event",(data)=>{
+
+      socket.on("user_offline_event", (data) => {
         dispatch(setAUserOffline(data))
       })
-      socket.on("user_online_event",(data)=>{
+      socket.on("user_online_event", (data) => {
         dispatch(setAUserOnline(data))
       })
-      socket.on("checkWhosOnline",(data)=>{
+      socket.on("checkWhosOnline", (data) => {
         const online_users = data.online_users
-        if(!online_users || !Array.isArray(online_users) || !online_users.length) return
-        online_users.forEach((user_id)=> dispatch(setAUserOnline({user_id})))
+        if (!online_users || !Array.isArray(online_users) || !online_users.length) return
+        online_users.forEach((user_id) => dispatch(setAUserOnline({ user_id })))
       })
-      
+
       // WAIT ALERT CONFIGARATION SETTIMEOUT
-      var tt = setTimeout(()=>{
-        if(chatsList.isLodding){
+      var tt = setTimeout(() => {
+        if (chatsList.isLodding) {
           setShowWaitAlert(true)
         }
-      },5000)
-      
-      
+      }, 5000)
+
+
     } // end if(my_Id)
-    
-  },[my_Id,dispatch])
-  
+
+  }, [my_Id, dispatch])
+
   return (
     <div className="h-dvh md:w-[500px] md:mx-auto bg-black text-white">
-      
-      <MyAlert 
+
+      <MyAlert
         title="Internet"
         text="Please Wait may your Internet Slow!"
         show={showWaitAlert}
         fixed={true}
         yes_btn_text="Ok"
         no_btn_text="Exit"
-        onConfrom={()=>setShowWaitAlert(false)}
-        onClose={()=>setShowWaitAlert(false)}
-        />
-      
+        onConfrom={() => setShowWaitAlert(false)}
+        onClose={() => setShowWaitAlert(false)}
+      />
+
       <BrowserRouter>
         <Routes>
           <Route element={<PrivetComponent />}>
@@ -164,5 +163,5 @@ export default function App(){
         </Routes>
       </BrowserRouter>
     </div>
-    )
+  )
 }
