@@ -10,7 +10,6 @@ export const GetChatList = createAsyncThunk("chats/GetChatList", async (_id) => 
     res = await res.json()
     // if any chats have online message then get it and sanitaiz chat 
     const bindChats = await getAndBindChats(res.chats)
-    console.log(bindChats)
     return bindChats
   } catch (err) {
     console.log(err)
@@ -18,7 +17,6 @@ export const GetChatList = createAsyncThunk("chats/GetChatList", async (_id) => 
 })
 
 function margeChats(localChat = [], onlineChat = []) {
-  console.log(onlineChat, localChat)
   // extract all local chat id
   const localChatsId = localChat.map(c => c.chat_id)
   // Margeing all chats
@@ -43,7 +41,6 @@ function margeChats(localChat = [], onlineChat = []) {
       messages: [...localMessage, ...onlineMessage]
     }
   })
-  console.log(marged)
   return marged
 }
 
@@ -79,20 +76,41 @@ export const chatsSlice = createSlice({
     },
 
     pushMessage: (state, action) => {
-      const newMessage = action.payload
-      state.chats = state.chats.map((chat) => {
-        if (chat.chat_id === newMessage.chat_id) {
-          const prev_messages = chat.messages ? chat.messages : []
-          const isalrady = prev_messages.findIndex(m => m.message_id === newMessage.message_id)
-          if (isalrady === -1) {
-            prev_messages.push(newMessage) // push new
-            return { ...chat, messages: prev_messages }
-          }
-          return chat
-        } else {
-          return chat
-        }
-      })
+      const newMessage = action.payload  // new message 
+      const Orgchats = (current(state)).chats // normalize current state 
+
+      const chatIndex = Orgchats.findIndex(c => c.chat_id === newMessage.chat_id) // find chat index 
+      if (chatIndex === -1) return // if chat not found then exit 
+
+      // check the message alrady have or not 
+      const isMessage = Orgchats[chatIndex].messages.findIndex(m => m.message_id === newMessage.message_id)
+      if (isMessage !== -1) return // thats means this message alrady have so exit 
+
+      // founded chat index now add message and set chat position on first place 
+      const chat = {
+        ...state.chats[chatIndex],
+        messages: [...state.chats[chatIndex].messages, newMessage]
+      }
+      state.chats.splice(chatIndex, 1) // delete previous position 
+      state.chats.unshift(chat) // bring first 
+
+
+
+
+
+      // state.chats = state.chats.map((chat) => {
+      //   if (chat.chat_id === newMessage.chat_id) {
+      //     const prev_messages = chat.messages ? chat.messages : []
+      //     const isalrady = prev_messages.findIndex(m => m.message_id === newMessage.message_id)
+      //     if (isalrady === -1) {
+      //       prev_messages.push(newMessage) // push new
+      //       return { ...chat, messages: prev_messages }
+      //     }
+      //     return chat
+      //   } else {
+      //     return chat
+      //   }
+      // })
     },
     messageSeen: (state, action) => {
       const currentState = current(state)

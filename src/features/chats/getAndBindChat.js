@@ -11,7 +11,7 @@ function getAndBindChats(chats) {
 
             // Now start geting messsages 
             for (const chat of chats) {
-                console.log(chat)
+
                 const isHaveMessage = chat ? (chat.messages ? (chat.messages.length ? chat.messages : null) : null) : null
                 if (isHaveMessage) {
                     // sent request to server 
@@ -32,10 +32,10 @@ function getAndBindChats(chats) {
                     ReturnChats.push(chat)
                 }
             }
-            console.log(ReturnChats)
+
             resolve(ReturnChats)
         } catch (err) {
-            console.log(err)
+
             resolve(null)
         }
     })
