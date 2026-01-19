@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit'
 import getAndBindChats from './getAndBindChat'
+import storeChatOrder from './storeChatOrder'
+import sortChatBySAvedOrder from './sortChatsBySavedOrder'
 
 const api = process.env.REACT_APP_API_URL
 
@@ -41,7 +43,10 @@ function margeChats(localChat = [], onlineChat = []) {
       messages: [...localMessage, ...onlineMessage]
     }
   })
-  return marged
+
+  // sort chats 
+  const sorted = sortChatBySAvedOrder(marged)
+  return sorted
 }
 
 // Chats slice code
@@ -94,24 +99,10 @@ export const chatsSlice = createSlice({
       state.chats.splice(chatIndex, 1) // delete previous position 
       state.chats.unshift(chat) // bring first 
 
-
-
-
-
-      // state.chats = state.chats.map((chat) => {
-      //   if (chat.chat_id === newMessage.chat_id) {
-      //     const prev_messages = chat.messages ? chat.messages : []
-      //     const isalrady = prev_messages.findIndex(m => m.message_id === newMessage.message_id)
-      //     if (isalrady === -1) {
-      //       prev_messages.push(newMessage) // push new
-      //       return { ...chat, messages: prev_messages }
-      //     }
-      //     return chat
-      //   } else {
-      //     return chat
-      //   }
-      // })
+      // Save chat order 
+      storeChatOrder(state.chats)
     },
+
     messageSeen: (state, action) => {
       const currentState = current(state)
       const { chat_id, message_id } = action.payload

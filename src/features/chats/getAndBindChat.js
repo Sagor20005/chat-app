@@ -22,6 +22,8 @@ function getAndBindChats(chats) {
                     })
                     if (response.ok) {
                         response = await response.json()
+                        // Filter null messages
+                        response = response.filter(e => e !== null)
                         // Extract messages 
                         const onlineMessages = response.map(e => e.message_data)
                         ReturnChats.push({ ...chat, messages: onlineMessages })
@@ -35,7 +37,6 @@ function getAndBindChats(chats) {
 
             resolve(ReturnChats)
         } catch (err) {
-
             resolve(null)
         }
     })
