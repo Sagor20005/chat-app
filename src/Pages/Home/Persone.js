@@ -10,9 +10,16 @@ export default function Persone({ last_message, chat }){
   const isMyMessage = last_message.sender === _id
   const last_message_text = last_message.text ? last_message.text.slice(0,20) : "Start new chat."
   
+
+  function clickOnPerson(e){
+    console.log(e)
+    Navigate("/inbox",{ state:{chat} })
+    e.bubbles = false
+  }
+
   
   return(
-    <div onClick={()=>Navigate("/inbox",{ state:{chat} })} className="hover:scale-95 transition flex justify-between items-center p-3" key={chat.user_name}>
+    <div onClick={clickOnPerson} className="hover:scale-95 transition flex justify-between items-center p-3" key={chat.user_name}>
         <div className="flex gap-3 items-center">
           <div className="relative">
             <img className="w-[70px] h-[70px] rounded-full shrink-0 object-cover" src={user_avatar ? user_avatar : defaultAvatar} alt="Persone" />

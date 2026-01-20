@@ -4,6 +4,10 @@ export default function Header({ online, name, avatar }){
   const Navigate = useNavigate()
    avatar = avatar ? avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
   
+  function GoToInfo(){
+    Navigate("/inbox/info")
+  }
+
   return(
     <div className="shrink-0 grow-0 bg-black flex justify-between items-center p-3">
       
@@ -18,7 +22,7 @@ export default function Header({ online, name, avatar }){
       
       <div className="flex gap-2 items-center text-xl">
         <i className="fa-solid fa-phone"></i>
-        <i className="fa-solid fa-circle-info"></i>
+        <i onClick={GoToInfo} className="fa-solid fa-circle-info"></i>
       </div>
       
     </div>

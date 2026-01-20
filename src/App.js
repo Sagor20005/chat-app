@@ -15,6 +15,7 @@ import { setAUserOnline, setAUserOffline, GetChatList, pushMessage, handleReact,
 import { socketIoConnected } from "./features/helper/helperSlice.js"
 import MyAlert from "./CastomElements/MyAlert.js"
 import nootifySound from "./utilities/notify.mp3"
+import Info from './Pages/Inbox/Header/Info.js';
 
 export let socket = {}
 
@@ -166,6 +167,9 @@ export default function App() {
             <Route path="/users" element={<Users />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/menu/profile" element={<Profile />} />
+
+            {/* Inbox  */}
+            <Route path='/inbox/info' element={ <Info />}  />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
