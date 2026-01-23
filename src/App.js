@@ -16,6 +16,8 @@ import { socketIoConnected } from "./features/helper/helperSlice.js"
 import MyAlert from "./CastomElements/MyAlert.js"
 import nootifySound from "./utilities/notify.mp3"
 import Info from './Pages/Inbox/Header/Info.js';
+import NameChange from './Pages/Menu/Profile/Sections/NameChange.js';
+import PasswordChange from './Pages/Menu/Profile/Sections/ChangePassword.js';
 
 export let socket = {}
 
@@ -163,13 +165,19 @@ export default function App() {
         <Routes>
           <Route element={<PrivetComponent />}>
             <Route path="/" element={<Home />} />
-            <Route path="/inbox" element={<Inbox />} />
+            {/* <Route path="/inbox" element={<Inbox />} /> */}
+            <Route path="/inbox/:chat_id" element={<Inbox />} />
             <Route path="/users" element={<Users />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/menu/profile" element={<Profile />} />
 
             {/* Inbox  */}
-            <Route path='/inbox/info' element={ <Info />}  />
+            <Route path='/inbox/info/:chat_id' element={ <Info />}  />
+
+            {/* Menu  */}
+            <Route path='/change-name' element={<NameChange />} />
+            <Route path='/password/:id' element={<PasswordChange />} />
+
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

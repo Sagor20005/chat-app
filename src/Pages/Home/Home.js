@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 export default function Home(){
   
   return(
-    <div className="h-dvh relative">
+    <div className="max-h-dvh relative flex flex-col">
       <Header />
       <ChatList />
       {/*Add New friend on Contact list */}

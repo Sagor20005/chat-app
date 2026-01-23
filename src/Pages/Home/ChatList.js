@@ -31,14 +31,14 @@ export default function ChatList() {
   if (!chatsList.isLodding && !chatsList.chats.length) alert_message = "Start a New chat."
   if (!chats.length) {
     return (
-      <div className="h-full w-full flex justify-center items-center">
+      <div className="h-dvh w-full flex justify-center items-center">
         <p><i className="fas fa-comment-medical"></i> {alert_message} </p>
       </div>
     )
   }
 
   return (
-    <div className="grid gap-2 p-3 relative">
+    <div className="grid gap-2 p-3 relative max-h-fit overflow-scroll">
 
 
 

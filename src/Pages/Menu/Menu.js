@@ -42,7 +42,7 @@ export default function Menu(){
         
         {/*Profile*/}
         <div onClick={()=>Navigate("profile")} className="flex gap-4 p-3">
-          <div className="h-[40px] w-[40px] rounded-full overflow-hidden">
+          <div className="hover:scale-110 transition h-[40px] w-[40px] rounded-full overflow-hidden">
             <img className="h-full w-full object-cover" src={ avatar.url || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq0aVzpF_JDE4onZ7MO2JS79xJTkm2kSMxh33DGd5ovw&s=10"} alt="" />
           </div>
           <div>
@@ -52,7 +52,7 @@ export default function Menu(){
         </div>
         {/*Logout*/}
         <div onClick={()=>setShowLogout(true)} className="flex gap-4 p-3 items-center">
-          <i class="fas fa-sign-out-alt"></i>
+          <i className="fas fa-sign-out-alt"></i>
           <p>Log out</p>
         </div>
       </div>

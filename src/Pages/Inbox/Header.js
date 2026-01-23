@@ -1,11 +1,17 @@
 import { useNavigate } from "react-router-dom"
 
-export default function Header({ online, name, avatar }){
+export default function Header({ chat }){
+  
   const Navigate = useNavigate()
-   avatar = avatar ? avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
+  
+  const online = chat?.online ? chat?.online : false
+  const name = chat?.user_name ? chat?.user_name : false
+  let avatar = chat?.user_avatar ? chat?.user_avatar : false
+  
+  avatar = avatar ? avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
   
   function GoToInfo(){
-    Navigate("/inbox/info")
+    Navigate("/inbox/info/"+chat.chat_id)
   }
 
   return(

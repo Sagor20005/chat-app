@@ -5,6 +5,8 @@ export default function Persone({ last_message, chat }){
   const Navigate = useNavigate()
   const defaultAvatar = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
   
+
+  const chat_id = chat.chat_id
   const { _id } = useParsedCookie()
   const { user_avatar, user_name, typing } = chat
   const isMyMessage = last_message.sender === _id
@@ -12,8 +14,9 @@ export default function Persone({ last_message, chat }){
   
 
   function clickOnPerson(e){
-    console.log(e)
-    Navigate("/inbox",{ state:{chat} })
+    // Navigate("/inbox",{ state:{chat} })
+    Navigate("/inbox/"+chat_id)
+
     e.bubbles = false
   }
 
