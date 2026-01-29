@@ -25,7 +25,7 @@ export default function Datails({ data }) {
 
     return (
         <>
-            <div className="hover:scale-105 transition w-2/3 bg-slate-400 p-5 rounded-xl mt-5 mx-auto ">
+            <div className="hover:scale-105 transition w-4/5 md:w-2/3 bg-slate-400 p-5 rounded-xl mt-5 mx-auto ">
                 {
                     InformationList.map((information)=>{
                    return(

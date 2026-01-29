@@ -119,7 +119,7 @@ export default function PasswordChange() {
                 {/* current_password CHENGE SECTION              */}
                 <div>
                     <p className="text-2xl mt-3">Change Email OR Phone</p>
-                    <form onSubmit={OnSubmit} className="w-2/3 bg-slate-900 rounded-lg p-4 mt-4 mx-auto">
+                    <form onSubmit={OnSubmit} className="md:w-2/3 w-full bg-slate-900 rounded-lg p-4 mt-4 mx-auto">
                         <div className="flex flex-col">
                             <label htmlFor="c_u_e">Email or Phone</label>
                             <input

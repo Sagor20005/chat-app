@@ -868,6 +868,14 @@ video {
   width: 100%;
 }
 
+.w-4 {
+  width: 1rem;
+}
+
+.w-3\/4 {
+  width: 75%;
+}
+
 .max-w-\[280px\] {
   max-width: 280px;
 }
@@ -1359,5 +1367,9 @@ video {
 
   .md\:w-\[500px\] {
     width: 500px;
+  }
+
+  .md\:w-2\/3 {
+    width: 66.666667%;
   }
 }
